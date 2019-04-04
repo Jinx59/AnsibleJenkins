@@ -5,7 +5,6 @@
   connection: local
   remote_user: root
   gather_facts: true
-  # become: yes
   tasks:
     - shell: cat /proc/cpuinfo
       register: infocpu
