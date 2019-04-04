@@ -6,14 +6,9 @@
   remote_user: root
   gather_facts: true
   tasks:
-    - shell: cat /proc/cpuinfo
+    - name: info
+      command: cat /proc/cpuinfo
       register: infocpu
-   
     - debug:
         var: infocpu
-
-  
-
-
-
 ...
