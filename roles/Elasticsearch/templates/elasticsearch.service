@@ -1,0 +1,49 @@
+[Unit]
+Description=Elasticsearch-{{es_cluster_name}}
+Documentation=http://www.elastic.co
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Environment=ES_HOME={{ es_path.home }}
+Environment=CONF_DIR={{ es_path.conf }}
+Environment=DATA_DIR={{ es_path.data }}
+Environment=LOG_DIR={{ es_path.log }}
+Environment=PID_DIR={{ es_path.pid }}
+EnvironmentFile=-{{ es_path.conf }}/elasticsearch
+
+WorkingDirectory={{ es_path.home }}
+
+User={{ es_user }}
+Group={{ es_group }}
+
+ExecStartPre={{ es_path.home }}/bin/elasticsearch-systemd-pre-exec
+
+ExecStart={{ es_path.home }}/bin/elasticsearch \
+                                    -p ${PID_DIR}/elasticsearch.pid \
+                                    -Edefault.path.logs=${LOG_DIR} \
+                                    -Edefault.path.data=${DATA_DIR} \
+                                    -Edefault.path.conf=${CONF_DIR} \
+                                    {% if not debug_mode %}--quiet{% endif %}
+
+
+StandardOutput=journal
+StandardError=inherit
+
+LimitMEMLOCK=infinity
+LimitNOFILE=65536
+
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=0
+
+# SIGTERM signal is used to stop the Java process
+KillSignal=SIGTERM
+
+# Java process is never killed
+SendSIGKILL=no
+
+# When a JVM receives a SIGTERM signal it exits with code 143
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
