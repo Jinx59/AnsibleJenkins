@@ -4,7 +4,7 @@ node {
     }
 
 	stage ('Build') { 
-		git url: 'https://github.com/Jinx59/AnsibleJenkins.git'
+		// git url: 'https://github.com/Jinx59/AnsibleJenkins.git'
         ansiblePlaybook(
            inventory: 'hosts',
            playbook: 'playbook.yml'
