@@ -2,7 +2,7 @@ pipeline {
          agent any
          stages {
 	             stage ('Run playbook') {
-                 step {
+                 steps {
                     ansiblePlaybook(
                        inventory: 'hosts',
                        playbook: 'playbook.yml'
