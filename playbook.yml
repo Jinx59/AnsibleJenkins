@@ -1,6 +1,6 @@
 ---
 
-- name: Jenkins testtt
+- name: Jenkins test
   hosts: all
   connection: local
   remote_user: root
